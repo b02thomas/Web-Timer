@@ -3,8 +3,11 @@ import TimerSetup from './TimerSetup';
 import TimerSession from './TimerSession';
 import TimerComplete from './TimerComplete';
 import ThemeToggle from './ThemeToggle';
+import SoundSettings from './SoundSettings';
 import { useTimer } from '../hooks/useTimer';
 import { useNotifications } from '../contexts/NotificationContext';
+import { Button } from './ui/button';
+import { Settings } from 'lucide-react';
 
 const IntervalTimer = () => {
   const [currentView, setCurrentView] = useState('setup'); // 'setup', 'session', 'complete'
