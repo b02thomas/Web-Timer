@@ -12,6 +12,7 @@ import { Settings } from 'lucide-react';
 const IntervalTimer = () => {
   const [currentView, setCurrentView] = useState('setup'); // 'setup', 'session', 'complete'
   const [timerConfig, setTimerConfig] = useState(null);
+  const [showSoundSettings, setShowSoundSettings] = useState(false);
   const { notifyWithSound, requestPermission } = useNotifications();
   
   const {
