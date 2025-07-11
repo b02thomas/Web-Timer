@@ -130,6 +130,12 @@ const IntervalTimer = () => {
             />
           )}
         </div>
+        
+        {/* Sound Settings Modal */}
+        <SoundSettings
+          isOpen={showSoundSettings}
+          onClose={() => setShowSoundSettings(false)}
+        />
       </div>
     </div>
   );
