@@ -135,13 +135,17 @@ export const NotificationProvider = ({ children }) => {
     oscillator.stop(audioContext.currentTime + 0.5);
   };
 
-  const notifyWithSound = (title, options = {}) => {
+  const notifyWithSound = (title, options = {}, soundType = 'interval') => {
     showNotification(title, options);
-    playSound();
+    playSound(soundType);
     
     // Vibration for mobile devices
     if ('vibrate' in navigator) {
-      navigator.vibrate([200, 100, 200]);
+      if (soundType === 'complete') {
+        navigator.vibrate([200, 100, 200, 100, 200]); // Longer vibration for completion
+      } else {
+        navigator.vibrate([200, 100, 200]);
+      }
     }
   };
 
