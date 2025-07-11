@@ -33,7 +33,7 @@ const IntervalTimer = () => {
       notifyWithSound('Session beendet!', {
         body: 'Ihre Intervall-Timer Session ist abgeschlossen.',
         tag: 'session-complete'
-      });
+      }, 'complete');
     }
   }, [timeLeft, timerConfig, currentView, notifyWithSound]);
 
@@ -43,7 +43,7 @@ const IntervalTimer = () => {
       notifyWithSound(`Intervall ${currentInterval}!`, {
         body: 'Zeit für eine Pause - Intervall erreicht!',
         tag: 'interval-notification'
-      });
+      }, 'interval');
     }
   }, [nextIntervalTime, isRunning, currentInterval, notifyWithSound]);
 
