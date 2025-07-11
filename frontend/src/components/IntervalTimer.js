@@ -86,7 +86,17 @@ const IntervalTimer = () => {
               Intervall-Timer
             </h1>
           </div>
-          <ThemeToggle />
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setShowSoundSettings(true)}
+              className="h-10 w-10 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-300 transform hover:scale-105"
+            >
+              <Settings className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+            </Button>
+            <ThemeToggle />
+          </div>
         </div>
 
         <div className="max-w-2xl mx-auto">
