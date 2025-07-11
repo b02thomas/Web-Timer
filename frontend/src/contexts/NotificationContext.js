@@ -47,27 +47,92 @@ export const NotificationProvider = ({ children }) => {
     return notification;
   };
 
-  const playSound = () => {
+  const playSound = (type = 'interval') => {
     try {
-      // Create a simple beep sound using Web Audio API
+      // Create audio context
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
       
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-      
-      oscillator.frequency.value = 800;
-      oscillator.type = 'sine';
-      
-      gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-      
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 0.5);
+      if (type === 'interval') {
+        // Pleasant bell sound for intervals
+        playBellSound(audioContext);
+      } else if (type === 'complete') {
+        // Success chime for session completion
+        playSuccessChime(audioContext);
+      } else {
+        // Default beep
+        playBeepSound(audioContext);
+      }
     } catch (error) {
       console.error('Error playing sound:', error);
     }
+  };
+
+  const playBellSound = (audioContext) => {
+    // Create a pleasant bell-like sound
+    const oscillator1 = audioContext.createOscillator();
+    const oscillator2 = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator1.connect(gainNode);
+    oscillator2.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    // Bell frequencies (C major chord)
+    oscillator1.frequency.value = 523.25; // C5
+    oscillator2.frequency.value = 659.25; // E5
+    
+    oscillator1.type = 'sine';
+    oscillator2.type = 'sine';
+    
+    // Volume envelope
+    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
+    
+    oscillator1.start(audioContext.currentTime);
+    oscillator2.start(audioContext.currentTime);
+    oscillator1.stop(audioContext.currentTime + 1.5);
+    oscillator2.stop(audioContext.currentTime + 1.5);
+  };
+
+  const playSuccessChime = (audioContext) => {
+    // Create a success chime (ascending notes)
+    const notes = [523.25, 659.25, 783.99]; // C5, E5, G5
+    
+    notes.forEach((freq, index) => {
+      setTimeout(() => {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.value = freq;
+        oscillator.type = 'sine';
+        
+        gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.5);
+      }, index * 200);
+    });
+  };
+
+  const playBeepSound = (audioContext) => {
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.value = 800;
+    oscillator.type = 'sine';
+    
+    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.5);
   };
 
   const notifyWithSound = (title, options = {}) => {
